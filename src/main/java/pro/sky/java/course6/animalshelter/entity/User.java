@@ -76,7 +76,6 @@ public class User {
     public int getPassport() {
         return passport;
     }
-
     public void setPassport(int passport) {
         this.passport = passport;
     }
