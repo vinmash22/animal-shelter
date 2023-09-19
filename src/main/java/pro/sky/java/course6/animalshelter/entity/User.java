@@ -72,7 +72,6 @@ public class User {
     public void setContacts(String contacts) {
         this.contacts = contacts;
     }
-
     public int getPassport() {
         return passport;
     }

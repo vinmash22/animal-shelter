@@ -56,7 +56,6 @@ public class Animal {
         this.name = name;
         this.age = age;
     }
-
     @Override
     public String toString() {
         return "Animal{" +
