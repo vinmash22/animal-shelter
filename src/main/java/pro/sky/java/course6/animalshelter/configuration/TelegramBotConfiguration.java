@@ -5,11 +5,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Конфигурация телеграм бота
+ */
 @Configuration
 public class TelegramBotConfiguration {
     @Value("${telegram.bot.token}")
     private String token;
 
+    /**
+     * Создается телеграм-бот, боту передается токен
+     * @return TelegramBot
+     */
     @Bean
     public TelegramBot telegramBot() {
         TelegramBot bot = new TelegramBot(token);

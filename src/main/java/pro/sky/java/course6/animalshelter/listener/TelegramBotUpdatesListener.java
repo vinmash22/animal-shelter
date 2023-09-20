@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.util.List;
 
+/** Данный класс обрабатывает сообщения телеграм-бота
+ *
+ */
 @Service
 public class TelegramBotUpdatesListener implements UpdatesListener {
 
@@ -19,12 +22,19 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
     @Autowired
     private TelegramBot telegramBot;
-
+    /** Инициализируем телеграмм бота
+     *
+     */
     @PostConstruct
     public void init() {
         telegramBot.setUpdatesListener(this);
     }
 
+    /**
+     * Считывает данные из консоли и возвращает текст
+     * @param updates
+     * @return UpdatesListener.CONFIRMED_UPDATES_ALL
+     */
     @Override
     public int process(List<Update> updates) {
         updates.forEach(update -> {

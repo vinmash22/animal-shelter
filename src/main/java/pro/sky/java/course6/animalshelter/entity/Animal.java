@@ -2,6 +2,9 @@ package pro.sky.java.course6.animalshelter.entity;
 
 import java.util.Objects;
 
+/** Данный класс используется для хранения данные о животных (собаках и кошках)
+ *
+ */
 public class Animal {
     long id;
     String type;

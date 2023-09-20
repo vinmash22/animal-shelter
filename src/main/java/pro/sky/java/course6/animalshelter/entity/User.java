@@ -2,6 +2,9 @@ package pro.sky.java.course6.animalshelter.entity;
 
 import java.util.Objects;
 
+/** Данный класс используется для хранения данных об усыновителях
+ *
+ */
 public class User {
     int id;
     String name;
