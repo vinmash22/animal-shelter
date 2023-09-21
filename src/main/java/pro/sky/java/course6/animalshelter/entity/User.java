@@ -1,16 +1,25 @@
 package pro.sky.java.course6.animalshelter.entity;
 
+import javax.persistence.*;
 import java.util.Objects;
 
 /** Данный класс используется для хранения данных об усыновителях
  *
  */
+@Entity
+@Table(name="user")
 public class User {
-    int id;
-    String name;
-    int age;
-    String contacts;
-    int passport;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    @Column (name = "name")
+    private String name;
+    @Column (name = "age")
+    private int age;
+    @Column (name = "contacts")
+    private String contacts;
+    @Column (name = "passport")
+    private int passport;
 
     public User(int id, String name, int age, String contacts, int passport) {
         this.id = id;
@@ -44,7 +53,7 @@ public class User {
         return Objects.hash(id, name, age, contacts, passport);
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
