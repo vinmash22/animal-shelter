@@ -7,7 +7,7 @@ import javax.persistence.*;
  */
 
 @Entity
-@Table(name="animal")
+//@Table(name="animal")
 public class Animal {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
