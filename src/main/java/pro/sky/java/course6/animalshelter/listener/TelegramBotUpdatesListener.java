@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pro.sky.java.course6.animalshelter.configuration.Buttons;
 import pro.sky.java.course6.animalshelter.configuration.Info;
 
 import javax.annotation.PostConstruct;
@@ -33,6 +34,9 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     @Autowired
     private TelegramBot telegramBot;
 
+    @Autowired
+    private Menu menu;
+
     /**
      * Инициализируем телеграмм бота
      */
@@ -52,113 +56,81 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     public int process(List<Update> updates) {
         updates.forEach(update -> {
             logger.info("Processing update: {}", update);
-            if (update.callbackQuery() != null) {
-                Long chatId = update.callbackQuery().message().chat().id();
-                CallbackQuery callbackQuery = update.callbackQuery();
-                String data = callbackQuery.data();
-                switch (data) {
-                    case "ПРИЮТ ДЛЯ КОШЕК":
-                        sendMessageCat(chatId, Info.HELLO_CAT.getText());
-                        break;
-                    case "ПРИЮТ ДЛЯ СОБАК":
-                        sendMessageDog(chatId, Info.HELLO_DOG.getText());
-                        break;
-                    case "Правила для собак":
-                        sendMessageDogMenu(chatId, Info.ROOLES_DOG.getText());
-                        break;
-                    case "Документы для собак":
-                        sendMessageDogMenu(chatId, Info.DOCUMENTS_DOG.getText());
-                        break;
-                    case "Правила для кошек":
-                        sendMessageCatMenu(chatId, Info.ROOLES_CAT.getText());
-                        break;
-                    case "Документы для кошек":
-                        sendMessageCatMenu(chatId, Info.DOCUMENTS_CAT.getText());
-                        break;
-                }
-            }
+
             if (update.message() != null && update.message().text() != null) {
                 var text = update.message().text();
                 Long chatId = update.message().chat().id();
                 if ("/start".equals(text)) {
-                    try {
-                        byte[] photo = Files.readAllBytes(
-                                Paths.get(TelegramBotUpdatesListener.class.getResource
-                                        ("/animal-shelter_menu.jpg").toURI()));
-                        sendPhotoStart(chatId, photo);
-                        sendMessageStart(chatId, Info.HELLO.getText());
-                    } catch (IOException | URISyntaxException e) {
-                        throw new RuntimeException(e);
-                    }
+                    menu.sendPhoto(chatId, "/animal-shelter_menu.jpg");
+                    sendMessageStart(chatId, Info.HELLO.getText());
                 }
+            }
+
+            if (update.callbackQuery() != null) {
+                Long chatId = update.callbackQuery().message().chat().id();
+                CallbackQuery callbackQuery = update.callbackQuery();
+                String data = callbackQuery.data();
+
+                if (data.equals(Buttons.START_CAT.getText())) {
+                    menu.sendMessageMenu(chatId, Info.HELLO_CAT.getText());
+                } else if (data.equals(Buttons.START_DOG.getText())) {
+                    menu.sendMessageMenu(chatId, Info.HELLO_DOG.getText());
+
+                } else if (data.equals(Buttons.SECOND_MENU_INFO_CAT.getText())) {
+                    menu.sendMessageMenu(chatId, Info.CAT_SHELTER.getText());
+                    menu.sendPhoto(chatId, "/planCats.jpg");
+                    menu.returnMainMenu(chatId, Buttons.RETURN_TO_MAIN_MENU.getText());
+
+                } else if (data.equals(Buttons.SECOND_MENU_INFO_DOG.getText())) {
+                    menu.sendMessageMenu(chatId, Info.DOG_SHELTER.getText());
+                    menu.sendPhoto(chatId, "/planDogs.jpg");
+                    menu.returnMainMenu(chatId, Buttons.RETURN_TO_MAIN_MENU.getText());
+
+                } else if (data.equals(Buttons.SECOND_MENU_REPORT.getText())) {
+                    menu.sendMessageMenu(chatId, Info.DEVELOPMENT.getText());
+
+                } else if (data.equals(Buttons.SECOND_MENU_VOLUNTEER.getText())) {
+                    menu.sendMessageMenu(chatId, Info.DEVELOPMENT.getText());
+
+                } else if (data.equals(Buttons.SECOND_MENU_TAKE_CAT.getText())) {
+                    menu.sendMessageMenu(chatId, Buttons.START_CAT.getText());
+
+                } else if (data.equals(Buttons.SECOND_MENU_TAKE_DOG.getText())) {
+                    menu.sendMessageMenu(chatId, Buttons.START_DOG.getText());
+
+                } else if (data.equals(Buttons.RETURN_TO_MAIN_MENU.getText())) {
+                    sendMessageStart(chatId, Buttons.MAIN_MENU.getText());
+
+                } else if (data.equals(Buttons.THIRD_MENU_RULES_CAT.getText())) {
+                    menu.returnMainMenu(chatId, Info.RULES_CAT.getText());
+
+                } else if (data.equals(Buttons.THIRD_MENU_RULES_DOG.getText())) {
+                    menu.returnMainMenu(chatId, Info.RULES_DOG.getText());
+
+                } else if (data.equals(Buttons.THIRD_MENU_ACCEPT.getText())) {
+                    menu.returnMainMenu(chatId, Info.DEVELOPMENT.getText());
+
+                } else if (data.equals(Buttons.THIRD_MENU_LIST.getText())) {
+                    menu.returnMainMenu(chatId, Info.DOCUMENTS.getText());
+
+                }else if (data.equals(Buttons.THIRD_MENU_QUESTIONS_CAT.getText())) {
+                    menu.returnMainMenu(chatId, Info.QUESTIONS_CAT.getText());
+
+                }else if (data.equals(Buttons.THIRD_MENU_QUESTIONS_DOG.getText())) {
+                    menu.returnMainMenu(chatId, Info.QUESTIONS_DOG.getText());
+
+                }
+
             }
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
 
-    private Keyboard createButtonsStart() {
-        InlineKeyboardButton button1 = new InlineKeyboardButton("ПРИЮТ ДЛЯ КОШЕК");
-        button1.callbackData("ПРИЮТ ДЛЯ КОШЕК");
-        InlineKeyboardButton button2 = new InlineKeyboardButton("ПРИЮТ ДЛЯ СОБАК");
-        button2.callbackData("ПРИЮТ ДЛЯ СОБАК");
-        Keyboard keyboard = new InlineKeyboardMarkup(button1, button2);
-        return keyboard;
-    }
-
-    private InlineKeyboardMarkup createButtonsCatMenu() {
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        InlineKeyboardButton button1 = new InlineKeyboardButton("Правила для кошек");
-        button1.callbackData("Правила для кошек");
-        InlineKeyboardButton button2 = new InlineKeyboardButton("Документы для кошек");
-        button2.callbackData("Документы для кошек");
-        inlineKeyboardMarkup.addRow(button1);
-        inlineKeyboardMarkup.addRow(button2);
-        return inlineKeyboardMarkup;
-    }
-
-
-    private InlineKeyboardMarkup createButtonsDogMenu() {
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        InlineKeyboardButton button1 = new InlineKeyboardButton("Правила для собак");
-        button1.callbackData("Правила для собак");
-        InlineKeyboardButton button2 = new InlineKeyboardButton("Документы для собак");
-        button2.callbackData("Документы для собак");
-        inlineKeyboardMarkup.addRow(button1);
-        inlineKeyboardMarkup.addRow(button2);
-        return inlineKeyboardMarkup;
-    }
 
     private void sendMessageStart(long chatId, String message) {
         SendMessage sendMessage = new SendMessage(chatId, message);
-        sendMessage.replyMarkup(createButtonsStart());
+        sendMessage.replyMarkup(menu.createButtonsStart());
         telegramBot.execute(sendMessage);
-    }
-
-    private void sendMessageCat(long chatId, String message) {
-        SendMessage sendMessage = new SendMessage(chatId, message);
-        sendMessage.replyMarkup(createButtonsCatMenu());
-        telegramBot.execute(sendMessage);
-    }
-
-    private void sendMessageDog(long chatId, String message) {
-        SendMessage sendMessage = new SendMessage(chatId, message);
-        sendMessage.replyMarkup(createButtonsDogMenu());
-        telegramBot.execute(sendMessage);
-    }
-
-    private void sendMessageDogMenu(long chatId, String message) {
-        SendMessage sendMessage = new SendMessage(chatId, message);
-         telegramBot.execute(sendMessage);
-    }
-    private void sendMessageCatMenu(long chatId, String message) {
-        SendMessage sendMessage = new SendMessage(chatId, message);
-        telegramBot.execute(sendMessage);
-    }
-
-    private void sendPhotoStart(long chatId, byte[] photo) {
-        SendPhoto sendPhoto = new SendPhoto(chatId, photo);
-        sendPhoto.caption("ПРИВЕТСТВУЕМ НОВОГО ПОЛЬЗОВАТЕЛЯ!");
-        telegramBot.execute(sendPhoto);
     }
 
 
