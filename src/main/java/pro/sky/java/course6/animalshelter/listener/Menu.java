@@ -44,7 +44,7 @@ public class Menu {
     /**
      * Второе меню
      */
-    public InlineKeyboardMarkup createSecondMenuCat(long chatId) {
+    public InlineKeyboardMarkup createSecondMenuCat() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         InlineKeyboardButton button1 = new InlineKeyboardButton(Buttons.SECOND_MENU_INFO_CAT.getText());
         button1.callbackData(Buttons.SECOND_MENU_INFO_CAT.getText());
@@ -61,7 +61,7 @@ public class Menu {
         return inlineKeyboardMarkup;
     }
 
-    public InlineKeyboardMarkup createSecondMenuDog(long chatId) {
+    public InlineKeyboardMarkup createSecondMenuDog() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         InlineKeyboardButton button1 = new InlineKeyboardButton(Buttons.SECOND_MENU_INFO_DOG.getText());
         button1.callbackData(Buttons.SECOND_MENU_INFO_DOG.getText());
@@ -82,7 +82,7 @@ public class Menu {
      * Меню - Как взять животное из приюта
      */
 
-    public InlineKeyboardMarkup createMenuTakeCat(long chatId) {
+    public InlineKeyboardMarkup createMenuTakeCat() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         InlineKeyboardButton button1 = new InlineKeyboardButton(Buttons.THIRD_MENU_RULES_CAT.getText());
         button1.callbackData(Buttons.THIRD_MENU_RULES_CAT.getText());
@@ -99,7 +99,7 @@ public class Menu {
         return inlineKeyboardMarkup;
     }
 
-    public InlineKeyboardMarkup createMenuTakeDog(long chatId) {
+    public InlineKeyboardMarkup createMenuTakeDog() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         InlineKeyboardButton button1 = new InlineKeyboardButton(Buttons.THIRD_MENU_RULES_DOG.getText());
         button1.callbackData(Buttons.THIRD_MENU_RULES_DOG.getText());
@@ -131,13 +131,13 @@ public class Menu {
     public void sendMessageMenu(long chatId, String message) {
         SendMessage sendMessage = new SendMessage(chatId, message);
         if (message.equals(Info.HELLO_CAT.getText())) {
-            sendMessage.replyMarkup(createSecondMenuCat(chatId));
+            sendMessage.replyMarkup(createSecondMenuCat());
         } else if (message.equals(Info.HELLO_DOG.getText())) {
-            sendMessage.replyMarkup(createSecondMenuDog(chatId));
+            sendMessage.replyMarkup(createSecondMenuDog());
         } else if (message.equals(Buttons.START_CAT.getText())) {
-            sendMessage.replyMarkup(createMenuTakeCat(chatId));
+            sendMessage.replyMarkup(createMenuTakeCat());
         } else if (message.equals(Buttons.START_DOG.getText())) {
-            sendMessage.replyMarkup(createMenuTakeDog(chatId));
+            sendMessage.replyMarkup(createMenuTakeDog());
         }
         telegramBot.execute(sendMessage);
     }
