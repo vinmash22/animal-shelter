@@ -1,7 +1,9 @@
 package pro.sky.java.course6.animalshelter.entity;
 
+import jakarta.persistence.*;
+
 import java.util.Objects;
-import javax.persistence.*;
+
 /** Данный класс используется для хранения данные о животных (собаках и кошках)
  *
  */
@@ -10,9 +12,9 @@ import javax.persistence.*;
 @Table(name="animal")
 public class Animal {
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column (name = "type")
+    @Column(name = "type")
     private String type;
     @Column (name = "color")
     private String color;
