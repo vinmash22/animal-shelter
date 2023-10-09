@@ -30,7 +30,9 @@ public class User {
         this.contacts = contacts;
         this.passport = passport;
     }
+    public User(){
 
+    }
     @Override
     public String toString() {
         return "User{" +
