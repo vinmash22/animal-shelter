@@ -1,6 +1,5 @@
 package pro.sky.java.course6.animalshelter.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pro.sky.java.course6.animalshelter.entity.User;
 import pro.sky.java.course6.animalshelter.repository.UserRepository;
@@ -9,7 +8,6 @@ import pro.sky.java.course6.animalshelter.repository.UserRepository;
 public class UserService {
 
 
-    @Autowired
     private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
@@ -17,7 +15,7 @@ public class UserService {
     }
 
     public User createUser (User user) {
-       return userRepository.saveAndFlush(user);
+       return userRepository.save(user);
     }
 }
 
