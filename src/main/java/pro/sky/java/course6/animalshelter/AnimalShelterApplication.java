@@ -6,7 +6,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@ComponentScan("pro.sky.java.course6.animalshelter.repository")
+//@ComponentScan("pro.sky.java.course6.animalshelter.repository")
 public class AnimalShelterApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(AnimalShelterApplication.class, args);

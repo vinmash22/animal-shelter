@@ -3,12 +3,14 @@
 -- changeset ZhdanovDM:1
 CREATE TABLE users (
 id bigserial primary key,
+id_chat VARCHAR(255),
 name VARCHAR(255),
 age BIGINT,
-contacts VARCHAR(255),
-passport BIGINT
+phone VARCHAR(255),
+role VARCHAR(255),
+animal_id bigserial
 )
-
+-- changeset ZhdanovDM:2
 CREATE TABLE animals (
 id bigserial primary key,
 type VARCHAR(255),
