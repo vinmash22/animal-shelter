@@ -1,6 +1,7 @@
--- liquibase formatted sql
+- liquibase formatted sql
 
--- changeset ZhdanovDM:1
+- changeset ZhdanovDM:1
+
 CREATE TABLE users (
 id bigserial primary key,
 id_chat VARCHAR(255),
@@ -10,7 +11,9 @@ phone VARCHAR(255),
 role VARCHAR(255),
 animal_id bigserial
 )
--- changeset ZhdanovDM:2
+
+- changeset ZhdanovDM:2
+
 CREATE TABLE animals (
 id bigserial primary key,
 type VARCHAR(255),

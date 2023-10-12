@@ -9,7 +9,7 @@ import pro.sky.java.course6.animalshelter.service.AnimalService;
 import pro.sky.java.course6.animalshelter.service.UserService;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/animals")
 public class AnimalController {
     private final AnimalService animalService;
 

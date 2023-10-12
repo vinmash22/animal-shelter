@@ -4,13 +4,14 @@ package pro.sky.java.course6.animalshelter.entity;
 
 import jakarta.persistence.*;
 
+//import javax.persistence.*;
 import java.util.Objects;
 
 /** Данный класс используется для хранения данных об усыновителях
  *
  */
 @Entity
-@Table(name="user")
+@Table(name="users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
