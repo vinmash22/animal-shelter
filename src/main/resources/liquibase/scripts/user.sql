@@ -10,7 +10,7 @@ age BIGINT,
 phone VARCHAR(255),
 role VARCHAR(255),
 animal_id bigserial
-)
+);
 
 - changeset ZhdanovDM:2
 
@@ -25,7 +25,6 @@ name VARCHAR(255),
 date DATE,
 chatId BIGINT,
 report_text  VARCHAR(255)
-)
+);
 
-LTER TABLE users RENAME COLUMN id_chat TO chatId;
 

@@ -22,23 +22,23 @@ public class Animal {
     private String breed;
     @Column(name = "sex")
     private String sex;
-    @Column (name = "age")
+    @Column(name = "age")
     private int age;
-    @Column (name = "color")
+    @Column(name = "color")
     private String color;
-    @Column (name = "name")
+    @Column(name = "name")
     private String name;
-    @Column (name = "date")
+    @Column(name = "date")
     private Date date;
-    @Column (name = "id_chat")
-    private String id_chat;
-    @Column (name = "report_text")
+    @Column(name = "chatId")
+    private String chatId;
+    @Column(name = "report_text")
     private String report_text;
 
     public Animal() {
     }
 
-    public Animal(long id, String type, String breed, String sex, int age, String color, String name, Date date, String id_chat, String report_text) {
+    public Animal(long id, String type, String breed, String sex, int age, String color, String name, Date date, String chatId, String report_text) {
         this.id = id;
         this.type = type;
         this.breed = breed;
@@ -47,7 +47,7 @@ public class Animal {
         this.color = color;
         this.name = name;
         this.date = date;
-        this.id_chat = id_chat;
+        this.chatId = chatId;
         this.report_text = report_text;
     }
 
@@ -115,12 +115,12 @@ public class Animal {
         this.date = date;
     }
 
-    public String getId_chat() {
-        return id_chat;
+    public String getChatId() {
+        return chatId;
     }
 
-    public void setId_chat(String id_chat) {
-        this.id_chat = id_chat;
+    public void setChatId(String chatId) {
+        this.chatId = chatId;
     }
 
     public String getReport_text() {
@@ -136,12 +136,12 @@ public class Animal {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Animal animal = (Animal) o;
-        return id == animal.id && age == animal.age && Objects.equals(type, animal.type) && Objects.equals(breed, animal.breed) && Objects.equals(sex, animal.sex) && Objects.equals(color, animal.color) && Objects.equals(name, animal.name) && Objects.equals(date, animal.date) && Objects.equals(id_chat, animal.id_chat) && Objects.equals(report_text, animal.report_text);
+        return id == animal.id && age == animal.age && Objects.equals(type, animal.type) && Objects.equals(breed, animal.breed) && Objects.equals(sex, animal.sex) && Objects.equals(color, animal.color) && Objects.equals(name, animal.name) && Objects.equals(date, animal.date) && Objects.equals(chatId, animal.chatId) && Objects.equals(report_text, animal.report_text);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, type, breed, sex, age, color, name, date, id_chat, report_text);
+        return Objects.hash(id, type, breed, sex, age, color, name, date, chatId, report_text);
     }
 
     @Override
@@ -155,7 +155,7 @@ public class Animal {
                 ", color='" + color + '\'' +
                 ", name='" + name + '\'' +
                 ", date=" + date +
-                ", id_chat='" + id_chat + '\'' +
+                ", chatId='" + chatId + '\'' +
                 ", report_text='" + report_text + '\'' +
                 '}';
     }
