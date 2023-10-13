@@ -4,7 +4,7 @@
 
 CREATE TABLE users (
 id bigserial primary key,
-id_chat VARCHAR(255),
+id_chat BIGINT,
 name VARCHAR(255),
 age BIGINT,
 phone VARCHAR(255),
@@ -23,6 +23,7 @@ age BIGINT,
 color VARCHAR(255),
 name VARCHAR(255),
 date DATE,
-id_chat VARCHAR(255),
+id_chat BIGINT,
 report_text  VARCHAR(255)
 )
+

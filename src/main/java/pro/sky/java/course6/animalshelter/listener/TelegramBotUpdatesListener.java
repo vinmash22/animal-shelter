@@ -69,12 +69,20 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 var text = update.message().text();
                 Long chatId = update.message().chat().id();
                 if ("/start".equals(text)) {
-                    menu.sendPhoto(chatId, "/animal-shelter_menu.jpg");
-                    sendMessageStart(chatId, Info.HELLO.getText());
-                    User user = new User();
-                    user.setId_chat(chatId);
-                    userService.createUser(user);
-                } else {
+                 //   User user = userService.findUserByChatId(chatId);
+              //    if (user == null){
+               //         user = new User();
+                //        user.setId_chat(chatId);
+                    //   userService.createUser(user);
+                 //       menu.sendPhoto(chatId, "/animal-shelter_menu.jpg");
+                   //     sendMessageStart(chatId, Info.HELLO.getText());
+                   // } //else {
+                   //    sendMessageStart(chatId, Info.HELLO.getText());
+
+                  // }
+
+                  //  userService.createUser(user);
+               //  else {
 
 
                     var textID = update.message().text();

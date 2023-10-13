@@ -15,7 +15,10 @@ public class UserService {
     }
 
     public User createUser (User user) {
-       return userRepository.save(user);
+               return userRepository.save(user);
     }
+ //   public User findUserByChatId (long id_chat) {
+  //      return  userRepository.findUserByChatId(id_chat);
+  //  }
 }
 

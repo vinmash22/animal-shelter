@@ -21,6 +21,8 @@ public class UserController {
         User createdUser = userService.createUser(user);
         return ResponseEntity.ok(createdUser);
     }
+
+
 }
 
 
