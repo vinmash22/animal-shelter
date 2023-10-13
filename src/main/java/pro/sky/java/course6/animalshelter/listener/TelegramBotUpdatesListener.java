@@ -4,11 +4,7 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
-import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
-import com.pengrad.telegrambot.model.request.Keyboard;
 import com.pengrad.telegrambot.request.SendMessage;
-import com.pengrad.telegrambot.request.SendPhoto;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,13 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pro.sky.java.course6.animalshelter.configuration.Buttons;
 import pro.sky.java.course6.animalshelter.configuration.Info;
+import pro.sky.java.course6.animalshelter.entity.Animal;
+import pro.sky.java.course6.animalshelter.entity.User;
+import pro.sky.java.course6.animalshelter.service.AnimalService;
+import pro.sky.java.course6.animalshelter.service.UserService;
 
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
+
+import static java.lang.Integer.parseInt;
 
 /**
  * Данный класс обрабатывает сообщения телеграм-бота
@@ -37,6 +35,14 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
     @Autowired
     private Menu menu;
+    private final AnimalService animalService;
+    private final UserService userService;
+    public TelegramBotUpdatesListener(AnimalService animalService, UserService userService) {
+        this.animalService = animalService;
+        this.userService = userService;
+    }
+
+
 
     /**
      * Инициализируем телеграмм бота
@@ -53,6 +59,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
      * @return UpdatesListener.CONFIRMED_UPDATES_ALL
      */
 
+
     @Override
     public int process(List<Update> updates) {
         updates.forEach(update -> {
@@ -64,7 +71,26 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 if ("/start".equals(text)) {
                     menu.sendPhoto(chatId, "/animal-shelter_menu.jpg");
                     sendMessageStart(chatId, Info.HELLO.getText());
+                    User user = new User();
+                    user.setId_chat(chatId);
+                    userService.createUser(user);
+                } else {
+
+
+                    var textID = update.message().text();
+                    int animalID = Integer.parseInt(textID);
+                    Animal animal = new Animal();
+                    //    animalService.findAnimal(animalID);
+                    animal.setReport_text("отчёт");
+                    animal.setAge(animalID);
+                    animalService.createAnimal(animal);
+                    telegramBot.execute(new SendMessage(chatId, "Опишите: " +
+                            "рацион животного. " +
+                            "Общее самочувствие и привыкание к новому месту. " +
+                            "Изменение в поведении: отказ от старых привычек, приобретение новых. " +
+                            "Прикрепите фото."));
                 }
+
             }
 
             if (update.callbackQuery() != null) {
@@ -88,7 +114,8 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                     menu.returnMainMenu(chatId, Buttons.RETURN_TO_MAIN_MENU.getText());
 
                 } else if (data.equals(Buttons.SECOND_MENU_REPORT.getText())) {
-                    menu.sendMessageMenu(chatId, Info.DEVELOPMENT.getText());
+                    menu.sendMessageMenu(chatId, "Напишите id животного");
+
 
                 } else if (data.equals(Buttons.SECOND_MENU_VOLUNTEER.getText())) {
                     menu.sendMessageMenu(chatId, Info.DEVELOPMENT.getText());
@@ -109,6 +136,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                     menu.returnMainMenu(chatId, Info.RULES_DOG.getText());
 
                 } else if (data.equals(Buttons.THIRD_MENU_ACCEPT.getText())) {
+
                     menu.returnMainMenu(chatId, Info.DEVELOPMENT.getText());
 
                 } else if (data.equals(Buttons.THIRD_MENU_LIST.getText())) {

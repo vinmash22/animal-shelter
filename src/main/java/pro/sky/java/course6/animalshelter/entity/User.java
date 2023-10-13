@@ -17,7 +17,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column (name = "id_chat")
-    private String id_chat;
+    private Long id_chat;
     @Column (name = "name")
     private String name;
     @Column (name = "age")
@@ -33,7 +33,7 @@ public class User {
 
     }
 
-    public User(long id, String id_chat, String name, int age, String phone, String role, long animal_id) {
+    public User(long id, long id_chat, String name, int age, String phone, String role, long animal_id) {
         this.id = id;
         this.id_chat = id_chat;
         this.name = name;
@@ -77,11 +77,11 @@ public class User {
         this.id = id;
     }
 
-    public String getId_chat() {
+    public long getId_chat() {
         return id_chat;
     }
 
-    public void setId_chat(String id_chat) {
+    public void setId_chat(long id_chat) {
         this.id_chat = id_chat;
     }
 

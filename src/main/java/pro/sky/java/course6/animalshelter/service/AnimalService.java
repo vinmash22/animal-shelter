@@ -18,6 +18,11 @@ public class AnimalService {
     public Animal createAnimal (Animal animal) {
         return animalRepository.save(animal);
     }
+
+    public Animal findAnimal(long id) {
+        return animalRepository.findById(id).get();
+    }
+
 }
 
 
