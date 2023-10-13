@@ -67,32 +67,29 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
             if (update.message() != null && update.message().text() != null) {
                 var text = update.message().text();
-                Long chatId = update.message().chat().id();
+                Long id_chat = update.message().chat().id();
                 if ("/start".equals(text)) {
-                 //   User user = userService.findUserByChatId(chatId);
-              //    if (user == null){
-               //         user = new User();
-                //        user.setId_chat(chatId);
+                  //  User user = userService.findUserByChatId(id_chat);
+                 //   if (user == null) {
+                   //     user = new User();
+                    //    user.setId_chat(id_chat);
                     //   userService.createUser(user);
-                 //       menu.sendPhoto(chatId, "/animal-shelter_menu.jpg");
-                   //     sendMessageStart(chatId, Info.HELLO.getText());
-                   // } //else {
-                   //    sendMessageStart(chatId, Info.HELLO.getText());
-
-                  // }
-
-                  //  userService.createUser(user);
-               //  else {
-
-
-                    var textID = update.message().text();
+                        menu.sendPhoto(id_chat, "/animal-shelter_menu.jpg");
+                        sendMessageStart(id_chat , Info.HELLO.getText());
+                   // } else {
+                   //     sendMessageStart(id_chat, Info.HELLO.getText());
+                        //  userService.createUser(user);
+                   // }
+                }
+                 else {
+                   var textID = update.message().text();
                     int animalID = Integer.parseInt(textID);
                     Animal animal = new Animal();
                     //    animalService.findAnimal(animalID);
                     animal.setReport_text("отчёт");
                     animal.setAge(animalID);
                     animalService.createAnimal(animal);
-                    telegramBot.execute(new SendMessage(chatId, "Опишите: " +
+                    telegramBot.execute(new SendMessage(id_chat, "Опишите: " +
                             "рацион животного. " +
                             "Общее самочувствие и привыкание к новому месту. " +
                             "Изменение в поведении: отказ от старых привычек, приобретение новых. " +

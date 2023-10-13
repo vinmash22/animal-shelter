@@ -4,7 +4,7 @@
 
 CREATE TABLE users (
 id bigserial primary key,
-id_chat BIGINT,
+chatId BIGINT,
 name VARCHAR(255),
 age BIGINT,
 phone VARCHAR(255),
@@ -23,7 +23,9 @@ age BIGINT,
 color VARCHAR(255),
 name VARCHAR(255),
 date DATE,
-id_chat BIGINT,
+chatId BIGINT,
 report_text  VARCHAR(255)
 )
+
+LTER TABLE users RENAME COLUMN id_chat TO chatId;
 
