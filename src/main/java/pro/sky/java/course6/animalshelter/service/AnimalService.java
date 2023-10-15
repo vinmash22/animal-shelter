@@ -19,8 +19,8 @@ public class AnimalService {
         return animalRepository.save(animal);
     }
 
-    public Animal findAnimal(long id) {
-        return animalRepository.findById(id).get();
+    public Animal findAnimalById(long id) {
+        return animalRepository.findAnimalById(id);
     }
 
 }

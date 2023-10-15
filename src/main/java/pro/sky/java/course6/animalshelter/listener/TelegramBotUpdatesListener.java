@@ -38,11 +38,11 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private Menu menu;
     private final AnimalService animalService;
     private final UserService userService;
+
     public TelegramBotUpdatesListener(AnimalService animalService, UserService userService) {
         this.animalService = animalService;
         this.userService = userService;
     }
-
 
 
     /**
@@ -70,32 +70,17 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 var text = update.message().text();
                 Long chatId = update.message().chat().id();
                 if ("/start".equals(text)) {
-                     User user = userService.findUserByChatId(chatId);
-                   if (user == null) {
-                       menu.sendPhoto(chatId, "/animal-shelter_menu.jpg");
-                       sendMessageStart(chatId , Info.HELLO.getText());
-                       User newUser = new User();
-                       newUser.setChatId(chatId);
-                       userService.createUser(newUser);
+                    User user = userService.findUserByChatId(chatId);
+                    if (user == null) {
+                        menu.sendPhoto(chatId, "/animal-shelter_menu.jpg");
+                        sendMessageStart(chatId, Info.HELLO.getText());
+                        User newUser = new User();
+                        newUser.setChatId(chatId);
+                        userService.createUser(newUser);
                     } else {
-                       sendMessageStart(chatId , "Выберите приют");
-                                         }
+                        sendMessageStart(chatId, "Выберите приют");
+                    }
                 }
-                 else {
-                   var textID = update.message().text();
-                    int animalID = Integer.parseInt(textID);
-                    Animal animal = new Animal();
-                    //    animalService.findAnimal(animalID);
-//                    animal.setReport_text("отчёт");
-//                    animal.setAge(animalID);
-//                    animalService.createAnimal(animal);
-//                    telegramBot.execute(new SendMessage(id_chat, "Опишите: " +
-//                            "рацион животного. " +
-//                            "Общее самочувствие и привыкание к новому месту. " +
-//                            "Изменение в поведении: отказ от старых привычек, приобретение новых. " +
-//                            "Прикрепите фото."));
-                }
-
             }
 
             if (update.callbackQuery() != null) {
@@ -119,7 +104,12 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                     menu.returnMainMenu(chatId, Buttons.RETURN_TO_MAIN_MENU.getText());
 
                 } else if (data.equals(Buttons.SECOND_MENU_REPORT.getText())) {
-                    menu.sendMessageMenu(chatId, "Напишите id животного");
+                    menu.sendMessageMenu(chatId, "Пришлите отчет в формате: " +
+                                    "ID животного: ;\n" +
+                                    "Рацион: ;\n" +
+                                    "Общее самочувствие и привыкание к новому месту: ;\n" +
+                                    "Изменение в поведении: отказ от старых привычек, приобретение новых: ;\n" +
+                                    "Прикрепите фото.");
 
                 } else if (data.equals(Buttons.SECOND_MENU_VOLUNTEER.getText())) {
                     menu.sendMessageMenu(chatId, Info.DEVELOPMENT.getText());
@@ -146,10 +136,10 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 } else if (data.equals(Buttons.THIRD_MENU_LIST.getText())) {
                     menu.returnMainMenu(chatId, Info.DOCUMENTS.getText());
 
-                }else if (data.equals(Buttons.THIRD_MENU_QUESTIONS_CAT.getText())) {
+                } else if (data.equals(Buttons.THIRD_MENU_QUESTIONS_CAT.getText())) {
                     menu.returnMainMenu(chatId, Info.QUESTIONS_CAT.getText());
 
-                }else if (data.equals(Buttons.THIRD_MENU_QUESTIONS_DOG.getText())) {
+                } else if (data.equals(Buttons.THIRD_MENU_QUESTIONS_DOG.getText())) {
                     menu.returnMainMenu(chatId, Info.QUESTIONS_DOG.getText());
 
                 }

@@ -22,4 +22,13 @@ public class AnimalController {
         Animal createdAnimal = animalService.createAnimal(animal);
         return ResponseEntity.ok(createdAnimal);
     }
+
+    @GetMapping("{id}")
+    public ResponseEntity<Animal> findAnimalById(@PathVariable Long id) {
+        Animal animal = animalService.findAnimalById(id);
+        if (animal == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(animal);
+    }
 }
