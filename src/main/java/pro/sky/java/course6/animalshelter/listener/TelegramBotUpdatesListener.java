@@ -68,19 +68,16 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
             if (update.message() != null && update.message().text() != null) {
                 var text = update.message().text();
-                Long id_chat = update.message().chat().id();
+                Long chatId = update.message().chat().id();
                 if ("/start".equals(text)) {
-                //   User user = userService.findUserByChatId(id_chat);
-                   //if (user == null) {
-                   //     user = new User();
-                    //    user.setId_chat(id_chat);
-                    //   userService.createUser(user);
-                        menu.sendPhoto(id_chat, "/animal-shelter_menu.jpg");
-                        sendMessageStart(id_chat , Info.HELLO.getText());
-                   // } else {
-                   //     sendMessageStart(id_chat, Info.HELLO.getText());
-                        //  userService.createUser(user);
-                   // }
+                    User user = userService.findUserByChatId(chatId);
+                   if (user == null) {
+                       menu.sendPhoto(chatId, "/animal-shelter_menu.jpg");
+                       sendMessageStart(chatId , Info.HELLO.getText());
+                        userService.createUser(user);
+                    } else {
+                       sendMessageStart(chatId , "Выберите приют");
+                                         }
                 }
                  else {
                    var textID = update.message().text();
@@ -166,7 +163,6 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         sendMessage.replyMarkup(menu.createButtonsStart());
         telegramBot.execute(sendMessage);
     }
-
 
 }
 
