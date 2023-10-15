@@ -1,6 +1,5 @@
 package pro.sky.java.course6.animalshelter.entity;
 
-//import javax.persistence.*;
 import jakarta.persistence.*;
 
 import java.util.Date;

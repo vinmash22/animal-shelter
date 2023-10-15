@@ -70,11 +70,13 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 var text = update.message().text();
                 Long chatId = update.message().chat().id();
                 if ("/start".equals(text)) {
-                    User user = userService.findUserByChatId(chatId);
+                     User user = userService.findUserByChatId(chatId);
                    if (user == null) {
                        menu.sendPhoto(chatId, "/animal-shelter_menu.jpg");
                        sendMessageStart(chatId , Info.HELLO.getText());
-                        userService.createUser(user);
+                       User newUser = new User();
+                       newUser.setChatId(chatId);
+                       userService.createUser(newUser);
                     } else {
                        sendMessageStart(chatId , "Выберите приют");
                                          }
