@@ -1,7 +1,7 @@
 -- liquibase formatted sql
--- changeset Mariya:4
+-- changeset Mariya:1
 
-CREATE TABLE users3 (
+CREATE TABLE users (
 id bigserial primary key,
 chatId BIGINT,
 name VARCHAR(255),
@@ -11,8 +11,8 @@ role VARCHAR(255),
 animalId BIGINT
 );
 
--- changeset Mariya:5
-CREATE TABLE animals3 (
+-- changeset Mariya:1
+CREATE TABLE animals (
 id bigserial primary key,
 type VARCHAR(255),
 breed VARCHAR(255),
