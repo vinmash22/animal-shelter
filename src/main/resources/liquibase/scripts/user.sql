@@ -1,30 +1,26 @@
-- liquibase formatted sql
+-- liquibase formatted sql
+-- changeset Mariya:4
 
-- changeset ZhdanovDM:1
-
-CREATE TABLE users (
+CREATE TABLE users3 (
 id bigserial primary key,
 chatId BIGINT,
 name VARCHAR(255),
-age BIGINT,
+age INT,
 phone VARCHAR(255),
 role VARCHAR(255),
-animal_id bigserial
+animalId BIGINT
 );
 
-- changeset ZhdanovDM:2
-
-CREATE TABLE animals (
+-- changeset Mariya:5
+CREATE TABLE animals3 (
 id bigserial primary key,
 type VARCHAR(255),
 breed VARCHAR(255),
 sex VARCHAR(255),
-age BIGINT,
+age INT,
 color VARCHAR(255),
 name VARCHAR(255),
 date DATE,
 chatId BIGINT,
-report_text  VARCHAR(255)
+reportText  VARCHAR(255)
 );
-
-

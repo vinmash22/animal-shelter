@@ -11,7 +11,7 @@ import java.util.Objects;
  *
  */
 @Entity
-@Table(name="users")
+@Table(name="users3")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,17 +26,20 @@ public class User {
     private String phone;
     @Column(name = "role")
     private String role;
-    @Column(name = "animal_id")
-    private long animal_id;
+    @Column(name = "animalId")
+    private long animalId;
 
-    public User(long id, Long chatId, String name, int age, String phone, String role, long animal_id) {
+    public User() {
+    }
+
+    public User(long id, Long chatId, String name, int age, String phone, String role, long animalId) {
         this.id = id;
         this.chatId = chatId;
         this.name = name;
         this.age = age;
         this.phone = phone;
         this.role = role;
-        this.animal_id = animal_id;
+        this.animalId = animalId;
     }
 
     public long getId() {
@@ -87,12 +90,12 @@ public class User {
         this.role = role;
     }
 
-    public long getAnimal_id() {
-        return animal_id;
+    public long getAnimalId() {
+        return animalId;
     }
 
-    public void setAnimal_id(long animal_id) {
-        this.animal_id = animal_id;
+    public void setAnimalId(long animalId) {
+        this.animalId = animalId;
     }
 
     @Override
@@ -100,12 +103,12 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && age == user.age && animal_id == user.animal_id && Objects.equals(chatId, user.chatId) && Objects.equals(name, user.name) && Objects.equals(phone, user.phone) && Objects.equals(role, user.role);
+        return id == user.id && age == user.age && animalId == user.animalId && Objects.equals(chatId, user.chatId) && Objects.equals(name, user.name) && Objects.equals(phone, user.phone) && Objects.equals(role, user.role);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, chatId, name, age, phone, role, animal_id);
+        return Objects.hash(id, chatId, name, age, phone, role, animalId);
     }
 
     @Override
@@ -117,7 +120,7 @@ public class User {
                 ", age=" + age +
                 ", phone='" + phone + '\'' +
                 ", role='" + role + '\'' +
-                ", animal_id=" + animal_id +
+                ", animalId=" + animalId +
                 '}';
     }
 }

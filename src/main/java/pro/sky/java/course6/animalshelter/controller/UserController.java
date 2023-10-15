@@ -23,8 +23,17 @@ public class UserController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<User> findUser(@PathVariable Long id) {
-        User user = userService.findUserByChatId(id);
+    public ResponseEntity<User> findUserById(@PathVariable Long id) {
+        User user = userService.findUserById(id);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/chatId/{chatId}")
+    public ResponseEntity<User> findUserByChatId(@PathVariable Long chatId) {
+        User user = userService.findUserById(chatId);
         if (user == null) {
             return ResponseEntity.notFound().build();
         }

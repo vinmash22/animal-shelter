@@ -7,7 +7,7 @@ import pro.sky.java.course6.animalshelter.entity.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-
+     User findUserById(long id);
      User findUserByChatId(long chatId);
 
 }

@@ -18,6 +18,7 @@ import pro.sky.java.course6.animalshelter.service.AnimalService;
 import pro.sky.java.course6.animalshelter.service.UserService;
 
 
+import java.util.Date;
 import java.util.List;
 
 import static java.lang.Integer.parseInt;
@@ -69,8 +70,8 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 var text = update.message().text();
                 Long id_chat = update.message().chat().id();
                 if ("/start".equals(text)) {
-                  //  User user = userService.findUserByChatId(id_chat);
-                 //   if (user == null) {
+                //   User user = userService.findUserByChatId(id_chat);
+                   //if (user == null) {
                    //     user = new User();
                     //    user.setId_chat(id_chat);
                     //   userService.createUser(user);
@@ -86,14 +87,14 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                     int animalID = Integer.parseInt(textID);
                     Animal animal = new Animal();
                     //    animalService.findAnimal(animalID);
-                    animal.setReport_text("отчёт");
-                    animal.setAge(animalID);
-                    animalService.createAnimal(animal);
-                    telegramBot.execute(new SendMessage(id_chat, "Опишите: " +
-                            "рацион животного. " +
-                            "Общее самочувствие и привыкание к новому месту. " +
-                            "Изменение в поведении: отказ от старых привычек, приобретение новых. " +
-                            "Прикрепите фото."));
+//                    animal.setReport_text("отчёт");
+//                    animal.setAge(animalID);
+//                    animalService.createAnimal(animal);
+//                    telegramBot.execute(new SendMessage(id_chat, "Опишите: " +
+//                            "рацион животного. " +
+//                            "Общее самочувствие и привыкание к новому месту. " +
+//                            "Изменение в поведении: отказ от старых привычек, приобретение новых. " +
+//                            "Прикрепите фото."));
                 }
 
             }
@@ -120,7 +121,6 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
                 } else if (data.equals(Buttons.SECOND_MENU_REPORT.getText())) {
                     menu.sendMessageMenu(chatId, "Напишите id животного");
-
 
                 } else if (data.equals(Buttons.SECOND_MENU_VOLUNTEER.getText())) {
                     menu.sendMessageMenu(chatId, Info.DEVELOPMENT.getText());

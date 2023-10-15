@@ -18,8 +18,10 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User findUserById(long id) {
+        return userRepository.findUserById(id);
+    }
     public User findUserByChatId(long chatId) {
         return userRepository.findUserByChatId(chatId);
     }
-
 }

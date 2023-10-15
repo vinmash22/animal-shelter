@@ -11,7 +11,7 @@ import java.util.Objects;
  */
 
 @Entity
-@Table(name="animals")
+@Table(name="animals3")
 public class Animal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,14 +31,14 @@ public class Animal {
     @Column(name = "date")
     private Date date;
     @Column(name = "chatId")
-    private String chatId;
-    @Column(name = "report_text")
-    private String report_text;
+    private long chatId;
+    @Column(name = "reportText")
+    private String reportText;
 
     public Animal() {
     }
 
-    public Animal(long id, String type, String breed, String sex, int age, String color, String name, Date date, String chatId, String report_text) {
+    public Animal(long id, String type, String breed, String sex, int age, String color, String name, Date date, long chatId, String reportText) {
         this.id = id;
         this.type = type;
         this.breed = breed;
@@ -48,7 +48,7 @@ public class Animal {
         this.name = name;
         this.date = date;
         this.chatId = chatId;
-        this.report_text = report_text;
+        this.reportText = reportText;
     }
 
     public long getId() {
@@ -115,20 +115,20 @@ public class Animal {
         this.date = date;
     }
 
-    public String getChatId() {
+    public long getChatId() {
         return chatId;
     }
 
-    public void setChatId(String chatId) {
+    public void setChatId(long chatId) {
         this.chatId = chatId;
     }
 
-    public String getReport_text() {
-        return report_text;
+    public String getReportText() {
+        return reportText;
     }
 
-    public void setReport_text(String report_text) {
-        this.report_text = report_text;
+    public void setReportText(String reportText) {
+        this.reportText = reportText;
     }
 
     @Override
@@ -136,12 +136,12 @@ public class Animal {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Animal animal = (Animal) o;
-        return id == animal.id && age == animal.age && Objects.equals(type, animal.type) && Objects.equals(breed, animal.breed) && Objects.equals(sex, animal.sex) && Objects.equals(color, animal.color) && Objects.equals(name, animal.name) && Objects.equals(date, animal.date) && Objects.equals(chatId, animal.chatId) && Objects.equals(report_text, animal.report_text);
+        return id == animal.id && age == animal.age && chatId == animal.chatId && Objects.equals(type, animal.type) && Objects.equals(breed, animal.breed) && Objects.equals(sex, animal.sex) && Objects.equals(color, animal.color) && Objects.equals(name, animal.name) && Objects.equals(date, animal.date) && Objects.equals(reportText, animal.reportText);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, type, breed, sex, age, color, name, date, chatId, report_text);
+        return Objects.hash(id, type, breed, sex, age, color, name, date, chatId, reportText);
     }
 
     @Override
@@ -155,8 +155,8 @@ public class Animal {
                 ", color='" + color + '\'' +
                 ", name='" + name + '\'' +
                 ", date=" + date +
-                ", chatId='" + chatId + '\'' +
-                ", report_text='" + report_text + '\'' +
+                ", chatId=" + chatId +
+                ", reportText='" + reportText + '\'' +
                 '}';
     }
 }
