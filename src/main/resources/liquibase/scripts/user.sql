@@ -11,7 +11,6 @@ role VARCHAR(255),
 animalId BIGINT
 );
 
--- changeset Mariya:1
 CREATE TABLE animals (
 id bigserial primary key,
 type VARCHAR(255),

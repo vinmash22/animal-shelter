@@ -11,7 +11,7 @@ import java.util.Objects;
  */
 
 @Entity
-@Table(name="animals3")
+@Table(name="animals")
 public class Animal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
