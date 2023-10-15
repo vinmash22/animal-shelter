@@ -33,7 +33,7 @@ public class UserController {
 
     @GetMapping("/chatId/{chatId}")
     public ResponseEntity<User> findUserByChatId(@PathVariable Long chatId) {
-        User user = userService.findUserById(chatId);
+        User user = userService.findUserByChatId(chatId);
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
