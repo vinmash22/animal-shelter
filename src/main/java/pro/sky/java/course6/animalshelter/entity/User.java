@@ -2,8 +2,8 @@ package pro.sky.java.course6.animalshelter.entity;
 
 
 
-import jakarta.persistence.*;
-
+//import jakarta.persistence.*;
+import javax.persistence.*;
 import java.util.Objects;
 
 /** Данный класс используется для хранения данных об усыновителях
