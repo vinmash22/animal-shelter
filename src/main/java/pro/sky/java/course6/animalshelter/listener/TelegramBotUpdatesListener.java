@@ -4,11 +4,13 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.request.GetFile;
 import com.pengrad.telegrambot.request.SendMessage;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pro.sky.java.course6.animalshelter.configuration.Buttons;
 import pro.sky.java.course6.animalshelter.configuration.Info;
@@ -17,7 +19,17 @@ import pro.sky.java.course6.animalshelter.entity.User;
 import pro.sky.java.course6.animalshelter.service.AnimalService;
 import pro.sky.java.course6.animalshelter.service.UserService;
 
+import java.io.FileOutputStream;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -59,12 +71,17 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
      * @param updates
      * @return UpdatesListener.CONFIRMED_UPDATES_ALL
      */
+    @Value("${path.to.reports.folder}")
+    private String reportsDir;
 
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    LocalDate date = LocalDate.now();
 
     @Override
     public int process(List<Update> updates) {
         updates.forEach(update -> {
             logger.info("Processing update: {}", update);
+
 
             if (update.message() != null && update.message().text() != null) {
                 var text = update.message().text();
@@ -80,6 +97,34 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                     } else {
                         sendMessageStart(chatId, "Выберите приют");
                     }
+                }
+                if (text.contains("Рацион")) {
+                    SendMessage sendMessage = new SendMessage(chatId, "Отчет принят");
+                    telegramBot.execute(sendMessage);
+                    date.format(formatter);
+                    String report = reportsDir+date+"_"+chatId.toString()+".txt";
+                    try (FileWriter writer = new FileWriter(report, false)) {
+                        writer.write(text);
+                        writer.flush();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+
+            }
+            if (update.message() != null && update.message().photo() != null) {
+                Long chatId = update.message().chat().id();
+                SendMessage sendMessage = new SendMessage(chatId, "Фото принято");
+                telegramBot.execute(sendMessage);
+                date.format(formatter);
+                String report = reportsDir+date+"_"+chatId.toString()+".jpg";
+                var photo = update.message().photo()[3];
+                var getFile = telegramBot.execute(new GetFile(photo.fileId()));
+                try (var in = new URL(telegramBot.getFullFilePath(getFile.file())).openStream();
+                     var out = new FileOutputStream(report)){
+                in.transferTo(out);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
             }
 
@@ -104,12 +149,12 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                     menu.returnMainMenu(chatId, Buttons.RETURN_TO_MAIN_MENU.getText());
 
                 } else if (data.equals(Buttons.SECOND_MENU_REPORT.getText())) {
-                    menu.sendMessageMenu(chatId, "Пришлите отчет в формате: " +
-                                    "ID животного: ;\n" +
-                                    "Рацион: ;\n" +
-                                    "Общее самочувствие и привыкание к новому месту: ;\n" +
-                                    "Изменение в поведении: отказ от старых привычек, приобретение новых: ;\n" +
-                                    "Прикрепите фото.");
+                    menu.sendMessageMenu(chatId, "Пришлите отчет в формате: \n" +
+                            "ID животного: ;\n" +
+                            "Рацион: ;\n" +
+                            "Самочувствие: ;\n" +
+                            "Поведение: ;\n" +
+                            "Прикрепите фото (под фото укажите id животного).");
 
                 } else if (data.equals(Buttons.SECOND_MENU_VOLUNTEER.getText())) {
                     menu.sendMessageMenu(chatId, Info.DEVELOPMENT.getText());
