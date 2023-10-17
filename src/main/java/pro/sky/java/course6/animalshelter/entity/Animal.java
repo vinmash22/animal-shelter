@@ -29,15 +29,25 @@ public class Animal {
     private String name;
     @Column(name = "date")
     private Date date;
-    @Column(name = "chatId")
-    private long chatId;
     @Column(name = "reportText")
     private String reportText;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Animal() {
     }
 
-    public Animal(long id, String type, String breed, String sex, int age, String color, String name, Date date, long chatId, String reportText) {
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Animal(long id, String type, String breed, String sex, int age, String color, String name, Date date, String reportText) {
         this.id = id;
         this.type = type;
         this.breed = breed;
@@ -46,7 +56,6 @@ public class Animal {
         this.color = color;
         this.name = name;
         this.date = date;
-        this.chatId = chatId;
         this.reportText = reportText;
     }
 
@@ -114,15 +123,7 @@ public class Animal {
         this.date = date;
     }
 
-    public long getChatId() {
-        return chatId;
-    }
-
-    public void setChatId(long chatId) {
-        this.chatId = chatId;
-    }
-
-    public String getReportText() {
+     public String getReportText() {
         return reportText;
     }
 
@@ -135,12 +136,12 @@ public class Animal {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Animal animal = (Animal) o;
-        return id == animal.id && age == animal.age && chatId == animal.chatId && Objects.equals(type, animal.type) && Objects.equals(breed, animal.breed) && Objects.equals(sex, animal.sex) && Objects.equals(color, animal.color) && Objects.equals(name, animal.name) && Objects.equals(date, animal.date) && Objects.equals(reportText, animal.reportText);
+        return id == animal.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, type, breed, sex, age, color, name, date, chatId, reportText);
+        return Objects.hash(id);
     }
 
     @Override
@@ -154,8 +155,8 @@ public class Animal {
                 ", color='" + color + '\'' +
                 ", name='" + name + '\'' +
                 ", date=" + date +
-                ", chatId=" + chatId +
                 ", reportText='" + reportText + '\'' +
+                ", user=" + user +
                 '}';
     }
 }

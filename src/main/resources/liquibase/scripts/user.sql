@@ -20,6 +20,6 @@ age INT,
 color VARCHAR(255),
 name VARCHAR(255),
 date DATE,
-chatId BIGINT,
+userId BIGINT,
 reportText  VARCHAR(255)
 );
