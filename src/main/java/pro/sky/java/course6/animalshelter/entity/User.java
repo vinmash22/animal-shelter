@@ -17,7 +17,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column (name = "id_chat")
-    private String id_chat;
+    private long chatId;
     @Column (name = "name")
     private String name;
     @Column (name = "age")
@@ -33,9 +33,9 @@ public class User {
 
     }
 
-    public User(long id, String id_chat, String name, int age, String phone, String role, long animal_id) {
+    public User(long id, long chatId, String name, int age, String phone, String role, long animal_id) {
         this.id = id;
-        this.id_chat = id_chat;
+        this.chatId = chatId;
         this.name = name;
         this.age = age;
         this.phone = phone;
@@ -48,19 +48,19 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && age == user.age && animal_id == user.animal_id && Objects.equals(id_chat, user.id_chat) && Objects.equals(name, user.name) && Objects.equals(phone, user.phone) && Objects.equals(role, user.role);
+        return id == user.id && chatId == user.chatId && age == user.age && animal_id == user.animal_id && Objects.equals(name, user.name) && Objects.equals(phone, user.phone) && Objects.equals(role, user.role);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, id_chat, name, age, phone, role, animal_id);
+        return Objects.hash(id, chatId, name, age, phone, role, animal_id);
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", id_chat='" + id_chat + '\'' +
+                ", chatId=" + chatId +
                 ", name='" + name + '\'' +
                 ", age=" + age +
                 ", phone='" + phone + '\'' +
@@ -77,12 +77,12 @@ public class User {
         this.id = id;
     }
 
-    public String getId_chat() {
-        return id_chat;
+    public long getChatId() {
+        return chatId;
     }
 
-    public void setId_chat(String id_chat) {
-        this.id_chat = id_chat;
+    public void setChatId(long chatId) {
+        this.chatId = chatId;
     }
 
     public String getName() {

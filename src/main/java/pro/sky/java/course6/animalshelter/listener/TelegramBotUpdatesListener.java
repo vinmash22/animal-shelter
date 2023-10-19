@@ -4,25 +4,29 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
-import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
-import com.pengrad.telegrambot.model.request.Keyboard;
 import com.pengrad.telegrambot.request.SendMessage;
-import com.pengrad.telegrambot.request.SendPhoto;
+import com.pengrad.telegrambot.response.SendResponse;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pro.sky.java.course6.animalshelter.configuration.Buttons;
+import pro.sky.java.course6.animalshelter.configuration.Dialog;
 import pro.sky.java.course6.animalshelter.configuration.Info;
+import pro.sky.java.course6.animalshelter.configuration.UserState;
+import pro.sky.java.course6.animalshelter.service.AnimalService;
+import pro.sky.java.course6.animalshelter.service.UserService;
 
-
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.sql.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static org.apache.coyote.http11.Constants.CONNECTION;
 
 /**
  * Данный класс обрабатывает сообщения телеграм-бота
@@ -37,11 +41,27 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
     @Autowired
     private Menu menu;
+    private final AnimalService animalService;
+    private final UserService userService;
+
+    public TelegramBotUpdatesListener(AnimalService animalService, UserService userService) {
+        this.animalService = animalService;
+        this.userService = userService;
+    }
+
+    public Statement createStatement() throws SQLException {
+        return null;
+    }
+
+    @Autowired
+    private final Map<Long, UserState> states = new HashMap<>();
+
 
     /**
      * Инициализируем телеграмм бота
      */
     @PostConstruct
+
     public void init() {
         telegramBot.setUpdatesListener(this);
     }
@@ -53,10 +73,20 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
      * @return UpdatesListener.CONFIRMED_UPDATES_ALL
      */
 
+    @Value("${path.to.reports.folder}")
+    private String reportsDir;
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    LocalDate date = LocalDate.now();
+
+
+
+
     @Override
     public int process(List<Update> updates) {
         updates.forEach(update -> {
             logger.info("Processing update: {}", update);
+
 
             if (update.message() != null && update.message().text() != null) {
                 var text = update.message().text();
@@ -91,7 +121,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                     menu.sendMessageMenu(chatId, Info.DEVELOPMENT.getText());
 
                 } else if (data.equals(Buttons.SECOND_MENU_VOLUNTEER.getText())) {
-                    menu.sendMessageMenu(chatId, Info.DEVELOPMENT.getText());
+                    menu.sendMessageMenu(chatId, Info.CALL_VOLUNTEER.getText());
 
                 } else if (data.equals(Buttons.SECOND_MENU_TAKE_CAT.getText())) {
                     menu.sendMessageMenu(chatId, Buttons.START_CAT.getText());
@@ -109,15 +139,40 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                     menu.returnMainMenu(chatId, Info.RULES_DOG.getText());
 
                 } else if (data.equals(Buttons.THIRD_MENU_ACCEPT.getText())) {
-                    menu.returnMainMenu(chatId, Info.DEVELOPMENT.getText());
+//                    menu.returnMainMenu(chatId, Info.DEVELOPMENT.getText());
+                  /*
+                  menu for receiving data
+                   */
+                    SendMessage sendMessage = new SendMessage(chatId, Dialog.SET_NAME_LAST_NAME.getText());
+                    telegramBot.execute(sendMessage);
+                    Long userId = update.message().from().id();
+                    String message = update.message().text();
+                    if (states.containsKey(userId) && states.get(userId).equals(UserState.ENTER_NAME)) {
+                        try {
+                            saveUserName(userId, message);
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                        states.put(userId, UserState.ENTER_NAME);
+                    } else if (states.containsKey(userId) && states.get(userId).equals(UserState.ENTER_PHONE)) {
+                        try {
+                            savePhone(userId, message);
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                        states.remove(userId);
+                    }
+                    if (update.message().text().equals("/enterUserData")) {
+                        states.put(userId, UserState.ENTER_NAME);
+                    }
 
                 } else if (data.equals(Buttons.THIRD_MENU_LIST.getText())) {
                     menu.returnMainMenu(chatId, Info.DOCUMENTS.getText());
 
-                }else if (data.equals(Buttons.THIRD_MENU_QUESTIONS_CAT.getText())) {
+                } else if (data.equals(Buttons.THIRD_MENU_QUESTIONS_CAT.getText())) {
                     menu.returnMainMenu(chatId, Info.QUESTIONS_CAT.getText());
 
-                }else if (data.equals(Buttons.THIRD_MENU_QUESTIONS_DOG.getText())) {
+                } else if (data.equals(Buttons.THIRD_MENU_QUESTIONS_DOG.getText())) {
                     menu.returnMainMenu(chatId, Info.QUESTIONS_DOG.getText());
 
                 }
@@ -134,6 +189,39 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         telegramBot.execute(sendMessage);
     }
 
+    private void sendMessage(SendMessage message) {
+        SendResponse response = telegramBot.execute(message);
+        if (response != null && !response.isOk()) {
+            logger.warn("Message was not sent: {}, error code: {}", message, response.errorCode());
+        }
+    }
+
+    private void saveUserName(Long userId, String message) throws SQLException {
+        try {
+            Connection connection = DriverManager.getConnection(CONNECTION);
+//            Statement stmt = connection.createStatement();
+            String query="INSERT INTO 'users' (id, name)" + "VALUES (?,?)";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(Math.toIntExact(userId),message);
+            statement.executeUpdate();
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private void savePhone(Long userId, String message) throws SQLException{
+        try {
+            Connection connection = DriverManager.getConnection(CONNECTION);
+            String query="INSERT INTO 'users' (id, phone)" + "VALUES (?,?)";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(Math.toIntExact(userId),message);
+            statement.executeUpdate();
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 
 }
 

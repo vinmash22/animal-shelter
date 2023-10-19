@@ -1,17 +1,18 @@
 package pro.sky.java.course6.animalshelter.listener;
 
 import com.pengrad.telegrambot.TelegramBot;
+import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
-
 import com.pengrad.telegrambot.model.request.Keyboard;
-import com.pengrad.telegrambot.model.request.KeyboardButton;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SendPhoto;
 import org.springframework.stereotype.Component;
-
 import pro.sky.java.course6.animalshelter.configuration.Buttons;
+import pro.sky.java.course6.animalshelter.configuration.Dialog;
 import pro.sky.java.course6.animalshelter.configuration.Info;
+import pro.sky.java.course6.animalshelter.repository.AnimalRepository;
+import pro.sky.java.course6.animalshelter.repository.UserRepository;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -23,8 +24,14 @@ public class Menu {
 
     private final TelegramBot telegramBot;
 
-    public Menu(TelegramBot telegramBot) {
+    private final UserRepository userRepository;
+
+    private final AnimalRepository animalRepository;
+
+    public Menu(TelegramBot telegramBot, UserRepository userRepository, AnimalRepository animalRepository) {
         this.telegramBot = telegramBot;
+        this.userRepository = userRepository;
+        this.animalRepository = animalRepository;
     }
 
 
@@ -126,7 +133,6 @@ public class Menu {
     }
 
 
-
     public void sendMessageMenu(long chatId, String message) {
         SendMessage sendMessage = new SendMessage(chatId, message);
         if (message.equals(Info.HELLO_CAT.getText())) {
@@ -160,5 +166,24 @@ public class Menu {
             throw new RuntimeException(e);
         }
     }
+
+    public void sendMessage(long chatId, String message) {
+        SendMessage sendMessage = new SendMessage(chatId, message);
+        telegramBot.execute(sendMessage);
+
+
+    }
+
+    public void onUpdateDialog(Update update) {
+        Long chatId = update.message().chat().id();
+        SendMessage message1 = new SendMessage(chatId, Dialog.SET_NAME_LAST_NAME.getText());
+        telegramBot.execute(message1);
+        var text = update.message().text();
+        if (text != null) {
+
+        }
+
+    }
+
 
 }
