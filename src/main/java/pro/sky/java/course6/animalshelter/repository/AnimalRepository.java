@@ -10,4 +10,5 @@ import pro.sky.java.course6.animalshelter.entity.User;
 @Repository
 public interface AnimalRepository extends JpaRepository<Animal, Long> {
     Animal findAnimalById(long id);
+
 }
