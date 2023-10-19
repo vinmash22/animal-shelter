@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- changeset ZhdanovDM:3
-CREATE TABLE users2 (
+CREATE TABLE users (
 id bigserial primary key,
 id_chat VARCHAR(255),
 name VARCHAR(255),
