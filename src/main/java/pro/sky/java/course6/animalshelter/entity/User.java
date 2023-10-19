@@ -1,45 +1,46 @@
 package pro.sky.java.course6.animalshelter.entity;
 
 
+
 import jakarta.persistence.*;
 
+//import javax.persistence.*;
 import java.util.Objects;
 
 /** Данный класс используется для хранения данных об усыновителях
  *
  */
 @Entity
-@Table(name="user")
+@Table(name="users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column (name = "id_chat")
+    private long chatId;
     @Column (name = "name")
     private String name;
     @Column (name = "age")
     private int age;
-    @Column (name = "contacts")
-    private String contacts;
-    @Column (name = "passport")
-    private int passport;
+    @Column (name = "phone")
+    private String phone;
+    @Column (name = "role")
+    private String role;
+    @Column (name = "animal_id")
+    private long animal_id;
 
-    public User(int id, String name, int age, String contacts, int passport) {
-        this.id = id;
-        this.name = name;
-        this.age = age;
-        this.contacts = contacts;
-        this.passport = passport;
+    public User(){
+
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", age=" + age +
-                ", contacts='" + contacts + '\'' +
-                ", passport=" + passport +
-                '}';
+    public User(long id, long chatId, String name, int age, String phone, String role, long animal_id) {
+        this.id = id;
+        this.chatId = chatId;
+        this.name = name;
+        this.age = age;
+        this.phone = phone;
+        this.role = role;
+        this.animal_id = animal_id;
     }
 
     @Override
@@ -47,20 +48,41 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && age == user.age && passport == user.passport && Objects.equals(name, user.name) && Objects.equals(contacts, user.contacts);
+        return id == user.id && chatId == user.chatId && age == user.age && animal_id == user.animal_id && Objects.equals(name, user.name) && Objects.equals(phone, user.phone) && Objects.equals(role, user.role);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, age, contacts, passport);
+        return Objects.hash(id, chatId, name, age, phone, role, animal_id);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", chatId=" + chatId +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", phone='" + phone + '\'' +
+                ", role='" + role + '\'' +
+                ", animal_id=" + animal_id +
+                '}';
     }
 
     public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
+    }
+
+    public long getChatId() {
+        return chatId;
+    }
+
+    public void setChatId(long chatId) {
+        this.chatId = chatId;
     }
 
     public String getName() {
@@ -79,17 +101,27 @@ public class User {
         this.age = age;
     }
 
-    public String getContacts() {
-        return contacts;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setContacts(String contacts) {
-        this.contacts = contacts;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
-    public int getPassport() {
-        return passport;
+
+    public String getRole() {
+        return role;
     }
-    public void setPassport(int passport) {
-        this.passport = passport;
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public long getAnimal_id() {
+        return animal_id;
+    }
+
+    public void setAnimal_id(long animal_id) {
+        this.animal_id = animal_id;
     }
 }

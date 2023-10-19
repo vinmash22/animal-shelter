@@ -33,6 +33,9 @@ public enum Buttons {
     RULES_MENU_ADVICES_DOG_HANDLER("Cоветы кинолога"),
     RULES_MENU_DOG_HANDLERS("Рекомендации по кинологам"),
     RULES_MENU_REFUSAL("Причины отказа в выдаче животного"),
+    CREATE_AND_SEND_CONTACT("Принять контактные данные"),
+    CANSEL("Отменить")
+
 
 
 
