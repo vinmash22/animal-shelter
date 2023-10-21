@@ -31,4 +31,13 @@ public class AnimalController {
         }
         return ResponseEntity.ok(animal);
     }
+    @GetMapping("{idUser}/{idAnimal}")
+    public ResponseEntity<Animal> takeAnAnimal(@PathVariable Long idUser, Long idAnimal) {
+        Animal animal = animalService.takeAnAnimal(idUser, idAnimal);
+        if (animal == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(animal);
+    }
+
 }

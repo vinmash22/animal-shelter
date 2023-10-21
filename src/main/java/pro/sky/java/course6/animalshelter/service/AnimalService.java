@@ -10,9 +10,11 @@ public class AnimalService {
 
 
     private final AnimalRepository animalRepository;
+    private final UserRepository userRepository;
 
-    public AnimalService(AnimalRepository animalRepository) {
+    public AnimalService(AnimalRepository animalRepository, UserRepository userRepository) {
         this.animalRepository = animalRepository;
+        this.userRepository = userRepository;
     }
 
     public Animal createAnimal (Animal animal) {
@@ -23,6 +25,12 @@ public class AnimalService {
         return animalRepository.findAnimalById(id);
     }
 
+    public Animal takeAnAnimal(long idUser, long idAnimal){
+        Animal animal = animalRepository.findAnimalById(idAnimal);
+        User user = userRepository.findUserById(idUser);
+        animal.setUser(user);
+        return animalRepository.save(animal);
+    }
 }
 
 
