@@ -160,5 +160,9 @@ public class Menu {
             throw new RuntimeException(e);
         }
     }
+    public void sentMessage(long chatId, String message) {
+        SendMessage sendMessage = new SendMessage(chatId, message);
+        telegramBot.execute(sendMessage);
+    }
 
 }

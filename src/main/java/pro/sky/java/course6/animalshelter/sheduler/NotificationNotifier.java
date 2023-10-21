@@ -55,17 +55,4 @@ public class NotificationNotifier {
 
     }
 
-//    public void trialPeriod() {
-//        Date date = new Date();
-//        animalRepository.findAll()
-//                .forEach(animal -> {
-//                    User user = animal.getUser();
-//                    Date date1 = animal.getDate();
-//                    int days = (int) ((date.getTime() - date1.getTime()) / (60 * 1000));
-//                    if (days >= 1 ) {
-//                        telegramBot.execute(new SendMessage(user.getChatId(), "Поздравляем, Date прошли испытательный срок!"));
-//                    }
-//                });
-//
-//    }
 }
