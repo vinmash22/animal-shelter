@@ -99,8 +99,29 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                     }
                 }
                 if (text.contains("Рацион")) {
-                    SendMessage sendMessage = new SendMessage(chatId, "Отчет принят");
-                    telegramBot.execute(sendMessage);
+                    String[] data = text.split("\\n");
+                    String data2 =  data[0];
+                    String[] data3 = data2.split(":");
+                    String data4 =  data3[1];
+                    int i = Integer.parseInt (data4.trim ());
+                    Animal animal = animalService.findAnimalById(i);
+                    if (animal.getReportText() == null || animal.getReportText().equals("text")|| animal.getReportText().equals("string")) {
+                        animal.setReportText("text");
+                        animalService.createAnimal(animal);
+                        SendMessage sendMessage = new SendMessage(chatId, "Принят отчет по животному: " + data4+" Пришлите фото.");
+                        telegramBot.execute(sendMessage);
+                    }
+                    else if (animal.getReportText().equals("photo")) {
+                        animal.setReportText("text, photo");
+                        animalService.createAnimal(animal);
+                        SendMessage sendMessage = new SendMessage(chatId, "Принят отчет по животному: " + data4);
+                        telegramBot.execute(sendMessage);
+                    }
+                    else if (animal.getReportText().equals("text, photo")) {
+                        SendMessage sendMessage = new SendMessage(chatId, "Дополнительный отчет по животному: " + data4+ " принят");
+                        telegramBot.execute(sendMessage);
+                    }
+
                     date.format(formatter);
                     String report = reportsDir+date+"_"+chatId.toString()+".txt";
                     try (FileWriter writer = new FileWriter(report, false)) {
@@ -109,13 +130,32 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
+
                 }
 
             }
             if (update.message() != null && update.message().photo() != null) {
                 Long chatId = update.message().chat().id();
-                SendMessage sendMessage = new SendMessage(chatId, "Фото принято");
-                telegramBot.execute(sendMessage);
+                String textPhoto = update.message().caption();
+                int i = Integer.parseInt (textPhoto.trim ());
+                Animal animal = animalService.findAnimalById(i);
+                if (animal.getReportText() == null || animal.getReportText().equals("photo") || animal.getReportText().equals("string")) {
+                    animal.setReportText("photo");
+                    animalService.createAnimal(animal);
+                    SendMessage sendMessage = new SendMessage(chatId, "Фото принято по животному: " + textPhoto+" Пришлите отчет.");
+                    telegramBot.execute(sendMessage);
+                }
+                else if (animal.getReportText().equals("text")) {
+                    animal.setReportText("text, photo");
+                    animalService.createAnimal(animal);
+                    SendMessage sendMessage = new SendMessage(chatId, "Фото принято по животному: " + textPhoto);
+                    telegramBot.execute(sendMessage);
+                }
+                else if (animal.getReportText().equals("text, photo")) {
+                    SendMessage sendMessage = new SendMessage(chatId, "Дополнительное фото по животному: " + textPhoto+ " принято");
+                    telegramBot.execute(sendMessage);
+                }
+
                 date.format(formatter);
                 String report = reportsDir+date+"_"+chatId.toString()+".jpg";
                 var photo = update.message().photo()[3];
@@ -150,10 +190,10 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
                 } else if (data.equals(Buttons.SECOND_MENU_REPORT.getText())) {
                     menu.sendMessageMenu(chatId, "Пришлите отчет в формате: \n" +
-                            "ID животного: ;\n" +
-                            "Рацион: ;\n" +
-                            "Самочувствие: ;\n" +
-                            "Поведение: ;\n" +
+                            "ID животного: \n" +
+                            "Рацион: \n" +
+                            "Самочувствие: \n" +
+                            "Поведение: \n" +
                             "Прикрепите фото (под фото укажите id животного).");
 
                 } else if (data.equals(Buttons.SECOND_MENU_VOLUNTEER.getText())) {
