@@ -9,12 +9,14 @@ import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.model.request.Keyboard;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SendPhoto;
+//import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pro.sky.java.course6.animalshelter.configuration.Buttons;
 import pro.sky.java.course6.animalshelter.configuration.Info;
+
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -132,8 +134,6 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         sendMessage.replyMarkup(menu.createButtonsStart());
         telegramBot.execute(sendMessage);
     }
-
-
 }
 
 
