@@ -39,7 +39,20 @@ public class UserController {
         }
         return ResponseEntity.ok(user);
     }
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.ok().build();
+    }
 
+    @GetMapping("/volunteer/{id}")
+    public ResponseEntity<User> addVolunteer(@PathVariable Long id) {
+        User user = userService.addVolunteer(id);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(user);
+    }
 
 }
 

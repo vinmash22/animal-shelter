@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 import pro.sky.java.course6.animalshelter.entity.User;
 import pro.sky.java.course6.animalshelter.repository.UserRepository;
 
+import java.util.Date;
+
 @Service
 public class UserService {
 
@@ -21,7 +23,19 @@ public class UserService {
     public User findUserById(long id) {
         return userRepository.findUserById(id);
     }
+
     public User findUserByChatId(long chatId) {
         return userRepository.findUserByChatId(chatId);
     }
+
+    public void deleteUser(long id) {
+        userRepository.deleteById(id);
+    }
+
+    public User addVolunteer(long id) {
+        User user = userRepository.findUserById(id);
+        user.setRole("volunteer");
+        return userRepository.save(user);
+    }
+
 }
