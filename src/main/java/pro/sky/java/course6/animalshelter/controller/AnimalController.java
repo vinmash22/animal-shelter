@@ -31,6 +31,7 @@ public class AnimalController {
         }
         return ResponseEntity.ok(animal);
     }
+
     @GetMapping("{idUser}/{idAnimal}")
     public ResponseEntity<Animal> takeAnAnimal(@PathVariable Long idUser, Long idAnimal) {
         Animal animal = animalService.takeAnAnimal(idUser, idAnimal);
@@ -38,6 +39,21 @@ public class AnimalController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(animal);
+    }
+
+    @GetMapping("{id}/newDate/{date}")
+    public ResponseEntity<Animal> newDate(@PathVariable long id, int date) {
+        Animal animal = animalService.newDate(id, date);
+        if (animal == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(animal);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteAnimal(@PathVariable Long id) {
+        animalService.deleteAnimal(id);
+        return ResponseEntity.ok().build();
     }
 
 }

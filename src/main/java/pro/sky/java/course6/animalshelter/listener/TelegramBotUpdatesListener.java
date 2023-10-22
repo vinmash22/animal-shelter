@@ -16,21 +16,17 @@ import pro.sky.java.course6.animalshelter.configuration.Buttons;
 import pro.sky.java.course6.animalshelter.configuration.Info;
 import pro.sky.java.course6.animalshelter.entity.Animal;
 import pro.sky.java.course6.animalshelter.entity.User;
+import pro.sky.java.course6.animalshelter.repository.UserRepository;
 import pro.sky.java.course6.animalshelter.service.AnimalService;
 import pro.sky.java.course6.animalshelter.service.UserService;
 
 import java.io.FileOutputStream;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 import static java.lang.Integer.parseInt;
@@ -50,10 +46,13 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private Menu menu;
     private final AnimalService animalService;
     private final UserService userService;
+    private final UserRepository userRepository;
 
-    public TelegramBotUpdatesListener(AnimalService animalService, UserService userService) {
+
+    public TelegramBotUpdatesListener(AnimalService animalService, UserService userService, UserRepository userRepository) {
         this.animalService = animalService;
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
 
@@ -134,12 +133,17 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
                 }
                 if (text.contains("Имя")) {
-                    User user = new User();
                     String[] userData = text.split("[:\\n]");
-                    user.setName(userData[1].trim());
-                    user.setAge(Integer.parseInt(userData[3].trim()));
-                    user.setPhone(userData[5].trim());
-                    userService.createUser(user);
+                    userRepository.findAll()
+                            .forEach(user -> {
+                                if (user.getChatId().equals(chatId)) {
+                                    user.setName(userData[1].trim());
+                                    user.setAge(Integer.parseInt(userData[3].trim()));
+                                    user.setPhone(userData[5].trim());
+                                    user.setChatId(chatId);
+                                    userRepository.save(user);
+                                }
+                            });
                     SendMessage sendMessage = new SendMessage(chatId, Info.USER_ACCEPT.getText());
                     telegramBot.execute(sendMessage);
                 }
