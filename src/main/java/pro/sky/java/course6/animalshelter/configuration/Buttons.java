@@ -23,19 +23,6 @@ public enum Buttons {
     MAIN_MENU("ГЛАВНОЕ МЕНЮ"),
     RETURN_TO_MAIN_MENU("Вернуться в главое меню"),
 
-    RULES_MENU_ACQUAINTANCE("Правила знакомства с животным"),
-    RULES_MENU_DOCUMENTS("Список документов, чтобы взять животное из приюта"),
-    RULES_MENU_TRANSPORT("Рекомендации по транспортировке животного"),
-    RULES_MENU_HOME_CAT("Рекомендации по обустройству дома для котенка"),
-    RULES_MENU_HOME_DOG("Рекомендации по обустройству дома для щенка"),
-    RULES_MENU_ADULT("Рекомендации по обустройству дома для взрослого животного"),
-    RULES_MENU_DISABILITIES("Рекомендации по обустройству дома для животного c ограниченными возможностями"),
-    RULES_MENU_ADVICES_DOG_HANDLER("Cоветы кинолога"),
-    RULES_MENU_DOG_HANDLERS("Рекомендации по кинологам"),
-    RULES_MENU_REFUSAL("Причины отказа в выдаче животного"),
-
-
-
     ;
     private final String text;
 

@@ -122,6 +122,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                         telegramBot.execute(sendMessage);
                     }
 
+
                     date.format(formatter);
                     String report = reportsDir+date+"_"+chatId.toString()+".txt";
                     try (FileWriter writer = new FileWriter(report, false)) {
@@ -132,7 +133,16 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                     }
 
                 }
-
+                if (text.contains("Имя")) {
+                    User user = new User();
+                    String[] userData = text.split("[:\\n]");
+                    user.setName(userData[1].trim());
+                    user.setAge(Integer.parseInt(userData[3].trim()));
+                    user.setPhone(userData[5].trim());
+                    userService.createUser(user);
+                    SendMessage sendMessage = new SendMessage(chatId, Info.USER_ACCEPT.getText());
+                    telegramBot.execute(sendMessage);
+                }
             }
             if (update.message() != null && update.message().photo() != null) {
                 Long chatId = update.message().chat().id();
@@ -189,15 +199,10 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                     menu.returnMainMenu(chatId, Buttons.RETURN_TO_MAIN_MENU.getText());
 
                 } else if (data.equals(Buttons.SECOND_MENU_REPORT.getText())) {
-                    menu.sendMessageMenu(chatId, "Пришлите отчет в формате: \n" +
-                            "ID животного: \n" +
-                            "Рацион: \n" +
-                            "Самочувствие: \n" +
-                            "Поведение: \n" +
-                            "Прикрепите фото (под фото укажите id животного).");
+                    menu.sendMessageMenu(chatId, Info.FORM_TO_FILL_REPORT.getText());
 
                 } else if (data.equals(Buttons.SECOND_MENU_VOLUNTEER.getText())) {
-                    menu.sendMessageMenu(chatId, Info.DEVELOPMENT.getText());
+                    menu.sendMessageMenu(chatId, Info.CALL_VOLUNTEER.getText());
 
                 } else if (data.equals(Buttons.SECOND_MENU_TAKE_CAT.getText())) {
                     menu.sendMessageMenu(chatId, Buttons.START_CAT.getText());
@@ -215,8 +220,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                     menu.returnMainMenu(chatId, Info.RULES_DOG.getText());
 
                 } else if (data.equals(Buttons.THIRD_MENU_ACCEPT.getText())) {
-
-                    menu.returnMainMenu(chatId, Info.DEVELOPMENT.getText());
+                    menu.sentMessage(chatId, Info.FORM_TO_FILL_USER.getText());
 
                 } else if (data.equals(Buttons.THIRD_MENU_LIST.getText())) {
                     menu.returnMainMenu(chatId, Info.DOCUMENTS.getText());
