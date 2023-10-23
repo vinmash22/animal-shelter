@@ -9,8 +9,7 @@ import com.pengrad.telegrambot.model.request.KeyboardButton;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SendPhoto;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+
 import pro.sky.java.course6.animalshelter.configuration.Buttons;
 import pro.sky.java.course6.animalshelter.configuration.Info;
 
@@ -160,6 +159,10 @@ public class Menu {
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
+    }
+    public void sentMessage(long chatId, String message) {
+        SendMessage sendMessage = new SendMessage(chatId, message);
+        telegramBot.execute(sendMessage);
     }
 
 }
