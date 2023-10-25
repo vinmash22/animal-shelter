@@ -10,13 +10,11 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import pro.sky.java.course6.animalshelter.entity.Animal;
 import pro.sky.java.course6.animalshelter.entity.User;
 import pro.sky.java.course6.animalshelter.repository.AnimalRepository;
 import pro.sky.java.course6.animalshelter.repository.UserRepository;
-import pro.sky.java.course6.animalshelter.service.AnimalService;
-import pro.sky.java.course6.animalshelter.service.UserService;
+
 import java.util.Date;
 
 import static org.mockito.ArgumentMatchers.any;

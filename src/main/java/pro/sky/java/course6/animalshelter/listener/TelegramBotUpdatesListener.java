@@ -6,7 +6,7 @@ import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.GetFile;
 import com.pengrad.telegrambot.request.SendMessage;
-import jakarta.annotation.PostConstruct;
+//import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +19,7 @@ import pro.sky.java.course6.animalshelter.entity.User;
 import pro.sky.java.course6.animalshelter.service.AnimalService;
 import pro.sky.java.course6.animalshelter.service.UserService;
 
+import javax.annotation.PostConstruct;
 import java.io.FileOutputStream;
 import java.net.URL;
 import java.nio.file.Files;
