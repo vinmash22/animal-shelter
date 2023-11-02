@@ -2,7 +2,7 @@ package pro.sky.java.course6.animalshelter.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 //import javax.persistence.*;
 import java.util.Collection;

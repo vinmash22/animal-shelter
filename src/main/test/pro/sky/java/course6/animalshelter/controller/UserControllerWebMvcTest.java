@@ -1,8 +1,6 @@
 package pro.sky.java.course6.animalshelter.controller;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Column;
-import jakarta.persistence.OneToMany;
+//import jakarta.persistence.OneToMany;
 import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.*;
 import org.mockito.InjectMocks;
@@ -11,21 +9,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.test.web.servlet.MockMvc;
+        import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import pro.sky.java.course6.animalshelter.entity.Animal;
+        import pro.sky.java.course6.animalshelter.entity.Animal;
 import pro.sky.java.course6.animalshelter.entity.User;
 import pro.sky.java.course6.animalshelter.repository.UserRepository;
-import pro.sky.java.course6.animalshelter.service.AnimalService;
-import pro.sky.java.course6.animalshelter.service.UserService;
 
 import java.util.Collection;
-import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.any;
+        import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
