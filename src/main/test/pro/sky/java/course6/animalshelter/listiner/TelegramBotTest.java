@@ -1,11 +1,8 @@
 package pro.sky.java.course6.animalshelter.listiner;
 
-import com.pengrad.telegrambot.model.Message;
+import com.pengrad.telegrambot.model.*;
 import com.pengrad.telegrambot.request.DeleteMessage;
 import com.pengrad.telegrambot.request.GetFile;
-import com.pengrad.telegrambot.model.CallbackQuery;
-import com.pengrad.telegrambot.model.DeleteMyCommands;
-import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
 import io.restassured.RestAssured;
@@ -14,6 +11,7 @@ import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
 import org.mockito.*;
+import org.mockito.internal.verification.Times;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +32,7 @@ import java.net.URL;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
+import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -52,7 +51,8 @@ public class TelegramBotTest {
     @MockBean
     private UserService userService;
 
-    @InjectMocks
+//    @InjectMocks
+    @MockBean
      private TelegramBotUpdatesListener telegramBotUpdatesListener;
 
     @InjectMocks
@@ -60,14 +60,18 @@ public class TelegramBotTest {
     @Mock
     Update update;
 
+/*    @Mock
+    List<Update> updates;*/
     @Mock
-    List<Update> updates;
+    Message message;
     @Mock
     CallbackQuery callbackQuery;
     @Mock
-    Message message;
+    Chat chat;
 
-    Long chat_Id = 22661L;
+
+
+    Long chat_Id = 1L;
 
     @Test
     public void succesSendMessage() {
@@ -86,19 +90,21 @@ public class TelegramBotTest {
 
     @Test
     public void testUpdate() {
-//        telegramBotUpdatesListener.process(updates);
-//        Mockito.when(updates.get(0)).thenReturn(update);
         Mockito.when(update.message()).thenReturn(message);
         Mockito.when(update.message().text()).thenReturn("Проверка наличия текста в update");
         String text = update.message().text();
         assertEquals(text, "Проверка наличия текста в update");
 
-/*        Mockito.when(update.message().chat().id()).thenReturn(22661L);
-        Long chat_Id1 = update.message().chat().id();
-        assertEquals(chat_Id1, 22661L);*/
+        when(update.message().chat()).thenReturn(chat);
+        when(update.message().chat().id()).thenReturn(1L);
 
+        Long chat_Id1 = update.message().chat().id();
+        assertEquals(chat_Id1, 1L);
+
+        List<Update> updates = List.of(update);
         System.out.println("Тест Update пройден");
     }
+
     @Test
     public void buttontTestSTART_CAT () {
         Mockito.when(update.callbackQuery()).thenReturn(callbackQuery);
